@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain;
-using System;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Infrastructure

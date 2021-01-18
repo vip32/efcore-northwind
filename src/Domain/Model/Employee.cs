@@ -43,5 +43,7 @@ namespace Domain
         public ICollection<Employee> DirectReports { get; private set; }
 
         public ICollection<Order> Orders { get; private set; }
+
+        public ICollection<Region> Regions { get; private set; }
     }
 }

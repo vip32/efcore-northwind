@@ -3,9 +3,9 @@ using Domain;
 
 namespace Infrastructure
 {
-    public class NorthwindDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public NorthwindDbContext(DbContextOptions<NorthwindDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
@@ -32,7 +32,7 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(NorthwindDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
     }
 }

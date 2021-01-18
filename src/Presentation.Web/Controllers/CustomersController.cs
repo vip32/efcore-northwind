@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Domain;
@@ -14,9 +13,9 @@ namespace Presentation.Web.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly NorthwindDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public CustomersController(NorthwindDbContext context)
+        public CustomersController(ApplicationDbContext context)
         {
             _context = context;
         }

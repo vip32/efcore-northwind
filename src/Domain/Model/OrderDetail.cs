@@ -1,4 +1,6 @@
-﻿namespace Domain
+﻿using System;
+
+namespace Domain
 {
     public class OrderDetail
     {
@@ -8,7 +10,11 @@
 
         public float Discount { get; set; }
 
+        public Guid OrderId { get; set; } // not really needed
+
         public Order Order { get; set; }
+
+        public Guid ProductId { get; set; } // not really needed
 
         public Product Product { get; set; }
     }

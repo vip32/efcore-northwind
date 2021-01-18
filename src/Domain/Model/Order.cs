@@ -26,9 +26,15 @@ namespace Domain
 
         public Address ShippingAddress { get; set; }
 
+        public Guid CustomerId { get; set; } // not really needed
+
         public Customer Customer { get; set; }
 
+        public Guid EmployeeId { get; set; } // not really needed
+
         public Employee Employee { get; set; }
+
+        public Guid ShipperId { get; set; } // not really needed
 
         public Shipper Shipper { get; set; }
 

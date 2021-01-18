@@ -21,7 +21,7 @@ namespace Presentation.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<NorthwindDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
               options.UseSqlite("Filename=data_application.db"));
 
             services.AddControllers();
@@ -36,7 +36,7 @@ namespace Presentation.Web
         {
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                serviceScope.ServiceProvider.GetService<NorthwindDbContext>().Database.Migrate(); // auto migrate
+                serviceScope.ServiceProvider.GetService<ApplicationDbContext>().Database.Migrate(); // auto migrate
             }
 
             if (env.IsDevelopment())
