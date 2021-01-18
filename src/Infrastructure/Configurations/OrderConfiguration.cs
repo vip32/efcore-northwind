@@ -9,7 +9,8 @@ namespace Infrastructure
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
+            builder.Property(e => e.Id)
+                .HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
             builder.Property(e => e.FreightCost)
                 .HasColumnType("money")
                 .HasDefaultValueSql("((0))");
@@ -25,16 +26,34 @@ namespace Infrastructure
                 o.Property(e => e.Quantity).IsRequired().HasDefaultValueSql("((1))");
                 o.Property(e => e.UnitPrice).IsRequired().HasColumnType("money");
 
-                //o.HasOne(d => d.Product)
-                //    .WithMany(p => p.OrderDetails)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("FK_Order_Details_Products");
+                o.HasOne(d => d.Product)
+                    .WithMany()
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
+            //builder.HasOne(d => d.BillingAddress)
+            //    .WithOne()
+            //    .IsRequired(false)
+            //    .OnDelete(DeleteBehavior.ClientSetNull);
+
+            //builder.HasOne(d => d.ShippingAddress)
+            //    .WithOne()
+            //    .IsRequired(false)
+            //    .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.HasOne(d => d.Customer)
+                //.WithMany(p => p.Orders)
+                .WithMany()
+                .HasForeignKey(d => d.CustomerId)
+                .IsRequired();
+
             builder.HasOne(d => d.Shipper)
-                .WithMany(p => p.Orders)
-                .HasForeignKey(d => d.ShipVia)
-                .HasConstraintName("FK_Orders_Shippers");
+                //.WithMany(p => p.Orders)
+                .WithMany()
+                .HasForeignKey(d => d.ShipperId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

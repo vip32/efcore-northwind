@@ -9,16 +9,21 @@ namespace Infrastructure
     {
         public void Configure(EntityTypeBuilder<Supplier> builder)
         {
-            builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
+            builder.Property(e => e.Id)
+                .HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
             builder.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(128);
+                .IsRequired().HasMaxLength(128);
+            builder.Property(e => e.Fax)
+                .HasMaxLength(32);
+            builder.Property(e => e.HomePage)
+                .HasColumnType("ntext");
+            builder.Property(e => e.Phone)
+                .HasMaxLength(32);
 
-            builder.Property(e => e.Fax).HasMaxLength(32);
-
-            builder.Property(e => e.HomePage).HasColumnType("ntext");
-
-            builder.Property(e => e.Phone).HasMaxLength(32);
+            //builder.HasOne(d => d.Address)
+            //    .WithOne()
+            //    .IsRequired(false)
+            //    .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

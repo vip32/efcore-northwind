@@ -7,7 +7,7 @@ namespace Domain
     {
         public Customer()
         {
-            Orders = new HashSet<Order>();
+            //Orders = new HashSet<Order>();
         }
 
         public Guid Id { get; set; }
@@ -22,6 +22,6 @@ namespace Domain
 
         public Address Address { get; set; }
 
-        public ICollection<Order> Orders { get; private set; }
+        //public ICollection<Order> Orders { get; private set; }
     }
 }

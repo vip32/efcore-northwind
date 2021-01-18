@@ -18,8 +18,6 @@ namespace Domain
 
         public DateTime? ShippedDate { get; set; }
 
-        public Guid? ShipVia { get; set; }
-
         public decimal? FreightCost { get; set; }
 
         public Address BillingAddress { get; set; }
@@ -30,11 +28,7 @@ namespace Domain
 
         public Customer Customer { get; set; }
 
-        public Guid EmployeeId { get; set; } // not really needed
-
-        public Employee Employee { get; set; }
-
-        public Guid ShipperId { get; set; } // not really needed
+        public Guid? ShipperId { get; set; } // not really needed
 
         public Shipper Shipper { get; set; }
 

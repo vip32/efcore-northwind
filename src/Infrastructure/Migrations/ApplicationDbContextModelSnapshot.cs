@@ -61,10 +61,15 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("TEXT");
+
                     b.Property<byte[]>("Picture")
                         .HasColumnType("image");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Categories");
                 });
@@ -170,9 +175,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("TEXT");
-
                     b.Property<decimal?>("FreightCost")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("money")
@@ -184,13 +186,10 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("RequiredDate")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("ShipVia")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime?>("ShippedDate")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid>("ShipperId")
+                    b.Property<Guid?>("ShipperId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("ShippingAddressId")
@@ -202,9 +201,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ShipVia");
+                    b.HasIndex("ShipperId");
 
                     b.HasIndex("ShippingAddressId");
 
@@ -385,6 +382,15 @@ namespace Infrastructure.Migrations
                     b.ToTable("EmployeeTerritory");
                 });
 
+            modelBuilder.Entity("Domain.Category", b =>
+                {
+                    b.HasOne("Domain.Category", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("Domain.Customer", b =>
                 {
                     b.HasOne("Domain.Address", "Address")
@@ -417,21 +423,14 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("BillingAddressId");
 
                     b.HasOne("Domain.Customer", "Customer")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Employee", "Employee")
-                        .WithMany("Orders")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Shipper", "Shipper")
-                        .WithMany("Orders")
-                        .HasForeignKey("ShipVia")
-                        .HasConstraintName("FK_Orders_Shippers");
+                        .WithMany()
+                        .HasForeignKey("ShipperId");
 
                     b.HasOne("Domain.Address", "ShippingAddress")
                         .WithMany()
@@ -472,7 +471,6 @@ namespace Infrastructure.Migrations
                             b1.HasOne("Domain.Product", "Product")
                                 .WithMany()
                                 .HasForeignKey("ProductId")
-                                .OnDelete(DeleteBehavior.Cascade)
                                 .IsRequired();
 
                             b1.Navigation("Order");
@@ -483,8 +481,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("BillingAddress");
 
                     b.Navigation("Customer");
-
-                    b.Navigation("Employee");
 
                     b.Navigation("OrderDetails");
 
@@ -542,7 +538,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Region", "Region")
                         .WithMany("Territories")
                         .HasForeignKey("RegionId")
-                        .HasConstraintName("FK_Territories_Region")
                         .IsRequired();
 
                     b.Navigation("Region");
@@ -568,16 +563,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Domain.Customer", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
             modelBuilder.Entity("Domain.Employee", b =>
                 {
                     b.Navigation("DirectReports");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("Regions");
                 });
@@ -585,11 +573,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Region", b =>
                 {
                     b.Navigation("Territories");
-                });
-
-            modelBuilder.Entity("Domain.Shipper", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Domain.Supplier", b =>

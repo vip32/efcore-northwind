@@ -9,7 +9,7 @@ namespace Domain
         {
             Territories = new HashSet<Territory>();
             DirectReports = new HashSet<Employee>();
-            Orders = new HashSet<Order>();
+            //Orders = new HashSet<Order>();
         }
 
         public Guid Id { get; set; }
@@ -42,7 +42,7 @@ namespace Domain
 
         public ICollection<Employee> DirectReports { get; private set; }
 
-        public ICollection<Order> Orders { get; private set; }
+        //public ICollection<Order> Orders { get; private set; }
 
         public ICollection<Region> Regions { get; private set; }
     }

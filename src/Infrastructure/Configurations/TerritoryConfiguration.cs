@@ -9,15 +9,13 @@ namespace Infrastructure
     {
         public void Configure(EntityTypeBuilder<Territory> builder)
         {
-            builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
+            builder.Property(e => e.Id)
+                .HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
             builder.Property(e => e.Description)
-                .IsRequired()
-                .HasMaxLength(50);
-
+                .IsRequired().HasMaxLength(50);
             builder.HasOne(d => d.Region)
                 .WithMany(p => p.Territories)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Territories_Region");
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

@@ -30,11 +30,18 @@ namespace Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 15, nullable: false),
                     Description = table.Column<string>(type: "ntext", nullable: true),
-                    Picture = table.Column<byte[]>(type: "image", nullable: true)
+                    Picture = table.Column<byte[]>(type: "image", nullable: true),
+                    ParentId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_Categories_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,13 +171,11 @@ namespace Infrastructure.Migrations
                     OrderedDate = table.Column<DateTime>(type: "datetime", nullable: true),
                     RequiredDate = table.Column<DateTime>(type: "datetime", nullable: true),
                     ShippedDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    ShipVia = table.Column<Guid>(type: "TEXT", nullable: true),
                     FreightCost = table.Column<decimal>(type: "money", nullable: true, defaultValueSql: "((0))"),
                     BillingAddressId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ShippingAddressId = table.Column<Guid>(type: "TEXT", nullable: true),
                     CustomerId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    EmployeeId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ShipperId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    ShipperId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,14 +199,8 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orders_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_Shippers",
-                        column: x => x.ShipVia,
+                        name: "FK_Orders_Shippers_ShipperId",
+                        column: x => x.ShipperId,
                         principalTable: "Shippers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -251,7 +250,7 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Territories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Territories_Region",
+                        name: "FK_Territories_Region_RegionId",
                         column: x => x.RegionId,
                         principalTable: "Region",
                         principalColumn: "Id",
@@ -283,7 +282,7 @@ namespace Infrastructure.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -309,6 +308,11 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_ParentId",
+                table: "Categories",
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_AddressId",
@@ -346,19 +350,14 @@ namespace Infrastructure.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_EmployeeId",
+                name: "IX_Orders_ShipperId",
                 table: "Orders",
-                column: "EmployeeId");
+                column: "ShipperId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ShippingAddressId",
                 table: "Orders",
                 column: "ShippingAddressId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_ShipVia",
-                table: "Orders",
-                column: "ShipVia");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",

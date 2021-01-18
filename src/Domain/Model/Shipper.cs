@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Domain
 {
@@ -7,7 +6,7 @@ namespace Domain
     {
         public Shipper()
         {
-            Orders = new HashSet<Order>();
+            //Orders = new HashSet<Order>();
         }
 
         public Guid Id { get; set; }
@@ -21,7 +20,5 @@ namespace Domain
         public string HomePage { get; set; }
 
         public Address Address { get; set; }
-
-        public ICollection<Order> Orders { get; private set; }
     }
 }
