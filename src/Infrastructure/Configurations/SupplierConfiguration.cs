@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Infrastructure
 {
@@ -8,13 +9,12 @@ namespace Infrastructure
     {
         public void Configure(EntityTypeBuilder<Supplier> builder)
         {
-            builder.Property(e => e.SupplierId).HasColumnName("SupplierID");
-
+            builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
             builder.Property(e => e.Address).HasMaxLength(60);
 
             builder.Property(e => e.City).HasMaxLength(15);
 
-            builder.Property(e => e.CompanyName)
+            builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(40);
 

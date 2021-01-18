@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Domain
 {
@@ -9,8 +10,9 @@ namespace Domain
             Territories = new HashSet<Territory>();
         }
 
-        public int RegionId { get; set; }
-        public string RegionDescription { get; set; }
+        public Guid Id { get; set; }
+
+        public string Description { get; set; }
 
         public ICollection<Territory> Territories { get; private set; }
     }

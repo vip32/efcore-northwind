@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Infrastructure
 {
@@ -8,15 +9,9 @@ namespace Infrastructure
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
-            builder.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-
-            builder.Property(e => e.Address).HasMaxLength(60);
+            builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
 
             builder.Property(e => e.BirthDate).HasColumnType("datetime");
-
-            builder.Property(e => e.City).HasMaxLength(15);
-
-            builder.Property(e => e.Country).HasMaxLength(15);
 
             builder.Property(e => e.Extension).HasMaxLength(4);
 
@@ -37,10 +32,6 @@ namespace Infrastructure
             builder.Property(e => e.Photo).HasColumnType("image");
 
             builder.Property(e => e.PhotoPath).HasMaxLength(255);
-
-            builder.Property(e => e.PostalCode).HasMaxLength(10);
-
-            builder.Property(e => e.Region).HasMaxLength(15);
 
             builder.Property(e => e.Title).HasMaxLength(30);
 

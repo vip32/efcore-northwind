@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Infrastructure
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(NorthwindDbContext))]
     partial class NorthwindDbContextModelSnapshot : ModelSnapshot
@@ -16,42 +16,66 @@ namespace Infrastructure
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.2");
 
+            modelBuilder.Entity("Domain.Address", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Line1")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Line2")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Address");
+                });
+
             modelBuilder.Entity("Domain.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("CategoryID");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .HasColumnType("ntext");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("TEXT");
+
                     b.Property<byte[]>("Picture")
                         .HasColumnType("image");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Domain.Customer", b =>
                 {
-                    b.Property<string>("CustomerId")
-                        .HasMaxLength(5)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("CustomerID");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(60)
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("City")
-                        .HasMaxLength(15)
+                    b.Property<Guid?>("AddressId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CompanyName")
@@ -67,10 +91,6 @@ namespace Infrastructure
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Country")
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Fax")
                         .HasMaxLength(24)
                         .HasColumnType("TEXT");
@@ -79,40 +99,24 @@ namespace Infrastructure
                         .HasMaxLength(24)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("TEXT");
+                    b.HasKey("Id");
 
-                    b.Property<string>("Region")
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("CustomerId");
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Domain.Employee", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("EmployeeID");
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Address")
-                        .HasMaxLength(60)
+                    b.Property<Guid?>("AddressId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Country")
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Extension")
                         .HasMaxLength(4)
@@ -145,16 +149,8 @@ namespace Infrastructure
                         .HasMaxLength(255)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(10)
+                    b.Property<Guid?>("ReportsTo")
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("Region")
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("ReportsTo")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
                         .HasMaxLength(30)
@@ -164,50 +160,29 @@ namespace Infrastructure
                         .HasMaxLength(25)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
+                    b.HasKey("Id");
 
-                    b.HasKey("EmployeeId");
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("ReportsTo");
 
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Domain.EmployeeTerritory", b =>
-                {
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("EmployeeID");
-
-                    b.Property<string>("TerritoryId")
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("TerritoryID");
-
-                    b.HasKey("EmployeeId", "TerritoryId")
-                        .HasAnnotation("SqlServer:Clustered", false);
-
-                    b.HasIndex("TerritoryId");
-
-                    b.ToTable("EmployeeTerritories");
-                });
-
             modelBuilder.Entity("Domain.Order", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("OrderID");
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("CustomerId")
-                        .HasMaxLength(5)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("CustomerID");
+                    b.Property<Guid?>("AddressId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("EmployeeID");
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal?>("Freight")
                         .ValueGeneratedOnAdd()
@@ -220,37 +195,15 @@ namespace Infrastructure
                     b.Property<DateTime?>("RequiredDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("ShipAddress")
-                        .HasMaxLength(60)
+                    b.Property<Guid?>("ShipVia")
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("ShipCity")
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ShipCountry")
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ShipName")
-                        .HasMaxLength(40)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ShipPostalCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ShipRegion")
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("ShipVia")
-                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("ShippedDate")
                         .HasColumnType("datetime");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("CustomerId");
 
@@ -261,49 +214,19 @@ namespace Infrastructure
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Domain.OrderDetail", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("OrderID");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("ProductID");
-
-                    b.Property<float>("Discount")
-                        .HasColumnType("REAL");
-
-                    b.Property<short>("Quantity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValueSql("((1))");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("money");
-
-                    b.HasKey("OrderId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Order Details");
-                });
-
             modelBuilder.Entity("Domain.Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("ProductID");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("CategoryID");
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("Discontinued")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ProductName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("TEXT");
@@ -317,9 +240,8 @@ namespace Infrastructure
                         .HasColumnType("INTEGER")
                         .HasDefaultValueSql("((0))");
 
-                    b.Property<int?>("SupplierId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("SupplierID");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal?>("UnitPrice")
                         .ValueGeneratedOnAdd()
@@ -336,7 +258,7 @@ namespace Infrastructure
                         .HasColumnType("INTEGER")
                         .HasDefaultValueSql("((0))");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
@@ -347,29 +269,27 @@ namespace Infrastructure
 
             modelBuilder.Entity("Domain.Region", b =>
                 {
-                    b.Property<int>("RegionId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("RegionID");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("RegionDescription")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("RegionId")
-                        .HasAnnotation("SqlServer:Clustered", false);
+                    b.HasKey("Id");
 
                     b.ToTable("Region");
                 });
 
             modelBuilder.Entity("Domain.Shipper", b =>
                 {
-                    b.Property<int>("ShipperId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("ShipperID");
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("CompanyName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("TEXT");
@@ -378,17 +298,16 @@ namespace Infrastructure
                         .HasMaxLength(24)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ShipperId");
+                    b.HasKey("Id");
 
                     b.ToTable("Shippers");
                 });
 
             modelBuilder.Entity("Domain.Supplier", b =>
                 {
-                    b.Property<int>("SupplierId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("SupplierID");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
                         .HasMaxLength(60)
@@ -396,11 +315,6 @@ namespace Infrastructure
 
                     b.Property<string>("City")
                         .HasMaxLength(15)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasMaxLength(40)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ContactName")
@@ -422,6 +336,11 @@ namespace Infrastructure
                     b.Property<string>("HomePage")
                         .HasColumnType("ntext");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Phone")
                         .HasMaxLength(24)
                         .HasColumnType("TEXT");
@@ -434,66 +353,78 @@ namespace Infrastructure
                         .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("SupplierId");
+                    b.HasKey("Id");
 
                     b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("Domain.Territory", b =>
                 {
-                    b.Property<string>("TerritoryId")
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("TerritoryID");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("RegionId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("RegionID");
-
-                    b.Property<string>("TerritoryDescription")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("TerritoryId")
-                        .HasAnnotation("SqlServer:Clustered", false);
+                    b.Property<Guid?>("RegionId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("RegionId");
 
                     b.ToTable("Territories");
                 });
 
+            modelBuilder.Entity("EmployeeTerritory", b =>
+                {
+                    b.Property<Guid>("EmployeesId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("TerritoriesId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("EmployeesId", "TerritoriesId");
+
+                    b.HasIndex("TerritoriesId");
+
+                    b.ToTable("EmployeeTerritory");
+                });
+
+            modelBuilder.Entity("Domain.Customer", b =>
+                {
+                    b.HasOne("Domain.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.Navigation("Address");
+                });
+
             modelBuilder.Entity("Domain.Employee", b =>
                 {
+                    b.HasOne("Domain.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("Domain.Employee", "Manager")
                         .WithMany("DirectReports")
                         .HasForeignKey("ReportsTo")
                         .HasConstraintName("FK_Employees_Employees");
 
+                    b.Navigation("Address");
+
                     b.Navigation("Manager");
-                });
-
-            modelBuilder.Entity("Domain.EmployeeTerritory", b =>
-                {
-                    b.HasOne("Domain.Employee", "Employee")
-                        .WithMany("EmployeeTerritories")
-                        .HasForeignKey("EmployeeId")
-                        .HasConstraintName("FK_EmployeeTerritories_Employees")
-                        .IsRequired();
-
-                    b.HasOne("Domain.Territory", "Territory")
-                        .WithMany("EmployeeTerritories")
-                        .HasForeignKey("TerritoryId")
-                        .HasConstraintName("FK_EmployeeTerritories_Territories")
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Territory");
                 });
 
             modelBuilder.Entity("Domain.Order", b =>
                 {
+                    b.HasOne("Domain.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("Domain.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId");
@@ -507,30 +438,56 @@ namespace Infrastructure
                         .HasForeignKey("ShipVia")
                         .HasConstraintName("FK_Orders_Shippers");
 
+                    b.OwnsMany("Domain.OrderDetail", "OrderDetails", b1 =>
+                        {
+                            b1.Property<Guid>("OrderId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<float>("Discount")
+                                .HasColumnType("REAL");
+
+                            b1.Property<Guid?>("ProductId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<short>("Quantity")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER")
+                                .HasDefaultValueSql("((1))");
+
+                            b1.Property<decimal>("UnitPrice")
+                                .HasColumnType("money");
+
+                            b1.HasKey("OrderId", "Id");
+
+                            b1.HasIndex("ProductId");
+
+                            b1.ToTable("OrderDetails");
+
+                            b1.WithOwner("Order")
+                                .HasForeignKey("OrderId");
+
+                            b1.HasOne("Domain.Product", "Product")
+                                .WithMany()
+                                .HasForeignKey("ProductId");
+
+                            b1.Navigation("Order");
+
+                            b1.Navigation("Product");
+                        });
+
+                    b.Navigation("Address");
+
                     b.Navigation("Customer");
 
                     b.Navigation("Employee");
 
+                    b.Navigation("OrderDetails");
+
                     b.Navigation("Shipper");
-                });
-
-            modelBuilder.Entity("Domain.OrderDetail", b =>
-                {
-                    b.HasOne("Domain.Order", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId")
-                        .HasConstraintName("FK_Order_Details_Orders")
-                        .IsRequired();
-
-                    b.HasOne("Domain.Product", "Product")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("ProductId")
-                        .HasConstraintName("FK_Order_Details_Products")
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Product", b =>
@@ -553,10 +510,24 @@ namespace Infrastructure
                     b.HasOne("Domain.Region", "Region")
                         .WithMany("Territories")
                         .HasForeignKey("RegionId")
-                        .HasConstraintName("FK_Territories_Region")
-                        .IsRequired();
+                        .HasConstraintName("FK_Territories_Region");
 
                     b.Navigation("Region");
+                });
+
+            modelBuilder.Entity("EmployeeTerritory", b =>
+                {
+                    b.HasOne("Domain.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Territory", null)
+                        .WithMany()
+                        .HasForeignKey("TerritoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Category", b =>
@@ -573,19 +544,7 @@ namespace Infrastructure
                 {
                     b.Navigation("DirectReports");
 
-                    b.Navigation("EmployeeTerritories");
-
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("Domain.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
-                });
-
-            modelBuilder.Entity("Domain.Product", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("Domain.Region", b =>
@@ -601,11 +560,6 @@ namespace Infrastructure
             modelBuilder.Entity("Domain.Supplier", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Domain.Territory", b =>
-                {
-                    b.Navigation("EmployeeTerritories");
                 });
 #pragma warning restore 612, 618
         }

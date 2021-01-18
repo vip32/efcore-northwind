@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Infrastructure
 {
@@ -8,14 +9,8 @@ namespace Infrastructure
     {
         public void Configure(EntityTypeBuilder<Region> builder)
         {
-            builder.HasKey(e => e.RegionId)
-                .IsClustered(false);
-
-            builder.Property(e => e.RegionId)
-                .HasColumnName("RegionID")
-                .ValueGeneratedNever();
-
-            builder.Property(e => e.RegionDescription)
+            builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
+            builder.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(50);
         }

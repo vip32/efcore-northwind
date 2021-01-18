@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Infrastructure
 {
@@ -8,14 +9,7 @@ namespace Infrastructure
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.Property(e => e.OrderId).HasColumnName("OrderID");
-
-            builder.Property(e => e.CustomerId)
-                .HasColumnName("CustomerID")
-                .HasMaxLength(5);
-
-            builder.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-
+            builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
             builder.Property(e => e.Freight)
                 .HasColumnType("money")
                 .HasDefaultValueSql("((0))");
@@ -24,19 +18,20 @@ namespace Infrastructure
 
             builder.Property(e => e.RequiredDate).HasColumnType("datetime");
 
-            builder.Property(e => e.ShipAddress).HasMaxLength(60);
-
-            builder.Property(e => e.ShipCity).HasMaxLength(15);
-
-            builder.Property(e => e.ShipCountry).HasMaxLength(15);
-
-            builder.Property(e => e.ShipName).HasMaxLength(40);
-
-            builder.Property(e => e.ShipPostalCode).HasMaxLength(10);
-
-            builder.Property(e => e.ShipRegion).HasMaxLength(15);
-
             builder.Property(e => e.ShippedDate).HasColumnType("datetime");
+
+            builder.OwnsMany(e => e.OrderDetails, o =>
+            {
+                //o.HasKey(nameof(OrderDetail..Id), nameof(Product.Id));
+
+                o.Property(e => e.Quantity).IsRequired().HasDefaultValueSql("((1))");
+                o.Property(e => e.UnitPrice).IsRequired().HasColumnType("money");
+
+                //o.HasOne(d => d.Product)
+                //    .WithMany(p => p.OrderDetails)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_Order_Details_Products");
+            });
 
             builder.HasOne(d => d.Shipper)
                 .WithMany(p => p.Orders)
