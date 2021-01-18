@@ -12,9 +12,9 @@ namespace Infrastructure
             builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
             builder.Property(e => e.Name)
                 .IsRequired()
-                .HasMaxLength(40);
+                .HasMaxLength(128);
 
-            builder.Property(e => e.QuantityPerUnit).HasMaxLength(20);
+            builder.Property(e => e.QuantityPerUnit).HasMaxLength(32);
 
             builder.Property(e => e.ReorderLevel).HasDefaultValueSql("((0))");
 

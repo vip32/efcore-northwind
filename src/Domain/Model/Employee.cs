@@ -20,15 +20,11 @@ namespace Domain
 
         public string Title { get; set; }
 
-        public string TitleOfCourtesy { get; set; }
-
         public DateTime? BirthDate { get; set; }
 
         public DateTime? HireDate { get; set; }
 
         public string HomePhone { get; set; }
-
-        public string Extension { get; set; }
 
         public byte[] Photo { get; set; }
 
@@ -38,7 +34,7 @@ namespace Domain
 
         public string PhotoPath { get; set; }
 
-        public Address Address { get; set; }
+        public Address HomeAddress { get; set; }
 
         public Employee Manager { get; set; }
 

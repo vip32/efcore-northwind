@@ -13,19 +13,17 @@ namespace Infrastructure
 
             builder.Property(e => e.BirthDate).HasColumnType("datetime");
 
-            builder.Property(e => e.Extension).HasMaxLength(4);
-
             builder.Property(e => e.FirstName)
                 .IsRequired()
-                .HasMaxLength(10);
+                .HasMaxLength(128);
+
+            builder.Property(e => e.LastName)
+                .IsRequired()
+                .HasMaxLength(128);
 
             builder.Property(e => e.HireDate).HasColumnType("datetime");
 
             builder.Property(e => e.HomePhone).HasMaxLength(24);
-
-            builder.Property(e => e.LastName)
-                .IsRequired()
-                .HasMaxLength(20);
 
             builder.Property(e => e.Notes).HasColumnType("ntext");
 
@@ -33,9 +31,7 @@ namespace Infrastructure
 
             builder.Property(e => e.PhotoPath).HasMaxLength(255);
 
-            builder.Property(e => e.Title).HasMaxLength(30);
-
-            builder.Property(e => e.TitleOfCourtesy).HasMaxLength(25);
+            builder.Property(e => e.Title).HasMaxLength(32);
 
             builder.HasOne(d => d.Manager)
                 .WithMany(p => p.DirectReports)

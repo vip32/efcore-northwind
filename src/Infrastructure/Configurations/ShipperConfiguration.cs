@@ -12,9 +12,13 @@ namespace Infrastructure
             builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
             builder.Property(e => e.Name)
                 .IsRequired()
-                .HasMaxLength(40);
+                .HasMaxLength(128);
 
-            builder.Property(e => e.Phone).HasMaxLength(24);
+            builder.Property(e => e.Fax).HasMaxLength(32);
+
+            builder.Property(e => e.HomePage).HasColumnType("ntext");
+
+            builder.Property(e => e.Phone).HasMaxLength(32);
         }
     }
 }

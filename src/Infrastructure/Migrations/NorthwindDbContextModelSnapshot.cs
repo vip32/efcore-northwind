@@ -78,25 +78,22 @@ namespace Infrastructure.Migrations
                     b.Property<Guid?>("AddressId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CompanyName")
+                    b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(40)
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ContactName")
-                        .HasMaxLength(30)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ContactTitle")
-                        .HasMaxLength(30)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Fax")
-                        .HasMaxLength(24)
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
-                        .HasMaxLength(24)
+                        .HasMaxLength(32)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(32)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -112,23 +109,19 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("AddressId")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Extension")
-                        .HasMaxLength(4)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(10)
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("HireDate")
                         .HasColumnType("datetime");
+
+                    b.Property<Guid?>("HomeAddressId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("HomePhone")
                         .HasMaxLength(24)
@@ -136,7 +129,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(20)
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Notes")
@@ -153,16 +146,12 @@ namespace Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(30)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TitleOfCourtesy")
-                        .HasMaxLength(25)
+                        .HasMaxLength(32)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("HomeAddressId");
 
                     b.HasIndex("ReportsTo");
 
@@ -175,7 +164,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("AddressId")
+                    b.Property<Guid?>("BillingAddressId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("CustomerId")
@@ -184,12 +173,12 @@ namespace Infrastructure.Migrations
                     b.Property<Guid?>("EmployeeId")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal?>("Freight")
+                    b.Property<decimal?>("FreightCost")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("money")
                         .HasDefaultValueSql("((0))");
 
-                    b.Property<DateTime?>("OrderDate")
+                    b.Property<DateTime?>("OrderedDate")
                         .HasColumnType("datetime");
 
                     b.Property<DateTime?>("RequiredDate")
@@ -201,15 +190,20 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("ShippedDate")
                         .HasColumnType("datetime");
 
+                    b.Property<Guid?>("ShippingAddressId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("BillingAddressId");
 
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("ShipVia");
+
+                    b.HasIndex("ShippingAddressId");
 
                     b.ToTable("Orders");
                 });
@@ -228,11 +222,11 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(40)
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("QuantityPerUnit")
-                        .HasMaxLength(20)
+                        .HasMaxLength(32)
                         .HasColumnType("TEXT");
 
                     b.Property<short?>("ReorderLevel")
@@ -275,7 +269,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(32)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -289,16 +283,28 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("AddressId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Fax")
+                        .HasMaxLength(32)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HomePage")
+                        .HasColumnType("ntext");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(40)
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
-                        .HasMaxLength(24)
+                        .HasMaxLength(32)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Shippers");
                 });
@@ -309,28 +315,11 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Address")
-                        .HasMaxLength(60)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ContactName")
-                        .HasMaxLength(30)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ContactTitle")
-                        .HasMaxLength(30)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Country")
-                        .HasMaxLength(15)
+                    b.Property<Guid?>("AddressId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Fax")
-                        .HasMaxLength(24)
+                        .HasMaxLength(32)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("HomePage")
@@ -338,22 +327,16 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(40)
+                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
-                        .HasMaxLength(24)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Region")
-                        .HasMaxLength(15)
+                        .HasMaxLength(32)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Suppliers");
                 });
@@ -405,25 +388,25 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Employee", b =>
                 {
-                    b.HasOne("Domain.Address", "Address")
+                    b.HasOne("Domain.Address", "HomeAddress")
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("HomeAddressId");
 
                     b.HasOne("Domain.Employee", "Manager")
                         .WithMany("DirectReports")
                         .HasForeignKey("ReportsTo")
                         .HasConstraintName("FK_Employees_Employees");
 
-                    b.Navigation("Address");
+                    b.Navigation("HomeAddress");
 
                     b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("Domain.Order", b =>
                 {
-                    b.HasOne("Domain.Address", "Address")
+                    b.HasOne("Domain.Address", "BillingAddress")
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("BillingAddressId");
 
                     b.HasOne("Domain.Customer", "Customer")
                         .WithMany("Orders")
@@ -437,6 +420,10 @@ namespace Infrastructure.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("ShipVia")
                         .HasConstraintName("FK_Orders_Shippers");
+
+                    b.HasOne("Domain.Address", "ShippingAddress")
+                        .WithMany()
+                        .HasForeignKey("ShippingAddressId");
 
                     b.OwnsMany("Domain.OrderDetail", "OrderDetails", b1 =>
                         {
@@ -479,7 +466,7 @@ namespace Infrastructure.Migrations
                             b1.Navigation("Product");
                         });
 
-                    b.Navigation("Address");
+                    b.Navigation("BillingAddress");
 
                     b.Navigation("Customer");
 
@@ -488,6 +475,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("OrderDetails");
 
                     b.Navigation("Shipper");
+
+                    b.Navigation("ShippingAddress");
                 });
 
             modelBuilder.Entity("Domain.Product", b =>
@@ -503,6 +492,24 @@ namespace Infrastructure.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("Domain.Shipper", b =>
+                {
+                    b.HasOne("Domain.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("Domain.Supplier", b =>
+                {
+                    b.HasOne("Domain.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Domain.Territory", b =>

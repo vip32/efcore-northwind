@@ -42,7 +42,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
+                    Description = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,51 +50,15 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shippers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
-                    Phone = table.Column<string>(type: "TEXT", maxLength: 24, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Shippers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Suppliers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
-                    ContactName = table.Column<string>(type: "TEXT", maxLength: 30, nullable: true),
-                    ContactTitle = table.Column<string>(type: "TEXT", maxLength: 30, nullable: true),
-                    Address = table.Column<string>(type: "TEXT", maxLength: 60, nullable: true),
-                    City = table.Column<string>(type: "TEXT", maxLength: 15, nullable: true),
-                    Region = table.Column<string>(type: "TEXT", maxLength: 15, nullable: true),
-                    PostalCode = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
-                    Country = table.Column<string>(type: "TEXT", maxLength: 15, nullable: true),
-                    Phone = table.Column<string>(type: "TEXT", maxLength: 24, nullable: true),
-                    Fax = table.Column<string>(type: "TEXT", maxLength: 24, nullable: true),
-                    HomePage = table.Column<string>(type: "ntext", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Suppliers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Customers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CompanyName = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
-                    ContactName = table.Column<string>(type: "TEXT", maxLength: 30, nullable: true),
-                    ContactTitle = table.Column<string>(type: "TEXT", maxLength: 30, nullable: true),
-                    AddressId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    Phone = table.Column<string>(type: "TEXT", maxLength: 24, nullable: true),
-                    Fax = table.Column<string>(type: "TEXT", maxLength: 24, nullable: true)
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 32, nullable: true),
+                    Phone = table.Column<string>(type: "TEXT", maxLength: 32, nullable: true),
+                    AddressId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -112,26 +76,24 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 30, nullable: true),
-                    TitleOfCourtesy = table.Column<string>(type: "TEXT", maxLength: 25, nullable: true),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 32, nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime", nullable: true),
                     HireDate = table.Column<DateTime>(type: "datetime", nullable: true),
                     HomePhone = table.Column<string>(type: "TEXT", maxLength: 24, nullable: true),
-                    Extension = table.Column<string>(type: "TEXT", maxLength: 4, nullable: true),
                     Photo = table.Column<byte[]>(type: "image", nullable: true),
                     Notes = table.Column<string>(type: "ntext", nullable: true),
                     ReportsTo = table.Column<Guid>(type: "TEXT", nullable: true),
                     PhotoPath = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
-                    AddressId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    HomeAddressId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employees_Address_AddressId",
-                        column: x => x.AddressId,
+                        name: "FK_Employees_Address_HomeAddressId",
+                        column: x => x.HomeAddressId,
                         principalTable: "Address",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -139,6 +101,50 @@ namespace Infrastructure.Migrations
                         name: "FK_Employees_Employees",
                         column: x => x.ReportsTo,
                         principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shippers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Phone = table.Column<string>(type: "TEXT", maxLength: 32, nullable: true),
+                    Fax = table.Column<string>(type: "TEXT", maxLength: 32, nullable: true),
+                    HomePage = table.Column<string>(type: "ntext", nullable: true),
+                    AddressId = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shippers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shippers_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Phone = table.Column<string>(type: "TEXT", maxLength: 32, nullable: true),
+                    Fax = table.Column<string>(type: "TEXT", maxLength: 32, nullable: true),
+                    HomePage = table.Column<string>(type: "ntext", nullable: true),
+                    AddressId = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Suppliers_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -163,12 +169,62 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    OrderedDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    RequiredDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    ShippedDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    ShipVia = table.Column<Guid>(type: "TEXT", nullable: true),
+                    FreightCost = table.Column<decimal>(type: "money", nullable: true, defaultValueSql: "((0))"),
+                    BillingAddressId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    ShippingAddressId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CustomerId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    EmployeeId = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Address_BillingAddressId",
+                        column: x => x.BillingAddressId,
+                        principalTable: "Address",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Orders_Address_ShippingAddressId",
+                        column: x => x.ShippingAddressId,
+                        principalTable: "Address",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Orders_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Orders_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Orders_Shippers",
+                        column: x => x.ShipVia,
+                        principalTable: "Shippers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
-                    QuantityPerUnit = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    QuantityPerUnit = table.Column<string>(type: "TEXT", maxLength: 32, nullable: true),
                     UnitPrice = table.Column<decimal>(type: "money", nullable: true, defaultValueSql: "((0))"),
                     UnitsInStock = table.Column<short>(type: "INTEGER", nullable: true, defaultValueSql: "((0))"),
                     UnitsOnOrder = table.Column<short>(type: "INTEGER", nullable: true, defaultValueSql: "((0))"),
@@ -190,49 +246,6 @@ namespace Infrastructure.Migrations
                         name: "FK_Products_Suppliers_SupplierId",
                         column: x => x.SupplierId,
                         principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    RequiredDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    ShippedDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    ShipVia = table.Column<Guid>(type: "TEXT", nullable: true),
-                    Freight = table.Column<decimal>(type: "money", nullable: true, defaultValueSql: "((0))"),
-                    AddressId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    CustomerId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    EmployeeId = table.Column<Guid>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_Address_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Address",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Orders_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Orders_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Orders_Shippers",
-                        column: x => x.ShipVia,
-                        principalTable: "Shippers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -295,9 +308,9 @@ namespace Infrastructure.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_AddressId",
+                name: "IX_Employees_HomeAddressId",
                 table: "Employees",
-                column: "AddressId");
+                column: "HomeAddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_ReportsTo",
@@ -315,9 +328,9 @@ namespace Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_AddressId",
+                name: "IX_Orders_BillingAddressId",
                 table: "Orders",
-                column: "AddressId");
+                column: "BillingAddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",
@@ -328,6 +341,11 @@ namespace Infrastructure.Migrations
                 name: "IX_Orders_EmployeeId",
                 table: "Orders",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_ShippingAddressId",
+                table: "Orders",
+                column: "ShippingAddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ShipVia",
@@ -343,6 +361,16 @@ namespace Infrastructure.Migrations
                 name: "IX_Products_SupplierId",
                 table: "Products",
                 column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shippers_AddressId",
+                table: "Shippers",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Suppliers_AddressId",
+                table: "Suppliers",
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Territories_RegionId",

@@ -12,7 +12,7 @@ namespace Domain
 
         public Guid Id { get; set; }
 
-        public DateTime? OrderDate { get; set; }
+        public DateTime? OrderedDate { get; set; }
 
         public DateTime? RequiredDate { get; set; }
 
@@ -20,9 +20,11 @@ namespace Domain
 
         public Guid? ShipVia { get; set; }
 
-        public decimal? Freight { get; set; }
+        public decimal? FreightCost { get; set; }
 
-        public Address Address { get; set; }
+        public Address BillingAddress { get; set; }
+
+        public Address ShippingAddress { get; set; }
 
         public Customer Customer { get; set; }
 

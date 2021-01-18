@@ -10,14 +10,12 @@ namespace Infrastructure
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
-            builder.Property(e => e.Freight)
+            builder.Property(e => e.FreightCost)
                 .HasColumnType("money")
                 .HasDefaultValueSql("((0))");
 
-            builder.Property(e => e.OrderDate).HasColumnType("datetime");
-
+            builder.Property(e => e.OrderedDate).HasColumnType("datetime");
             builder.Property(e => e.RequiredDate).HasColumnType("datetime");
-
             builder.Property(e => e.ShippedDate).HasColumnType("datetime");
 
             builder.OwnsMany(e => e.OrderDetails, o =>

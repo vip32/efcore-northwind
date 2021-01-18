@@ -12,7 +12,7 @@ namespace Infrastructure
             builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>().ValueGeneratedOnAdd();
             builder.Property(e => e.Description)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(32);
         }
     }
 }
